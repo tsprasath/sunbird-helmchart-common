@@ -1,13 +1,9 @@
-apiVersion: v2
-appVersion: 5.0.0
 dependencies:
 - name: common
   repository: https://keshavprasadms.github.io/sunbird-helmchart-templates
   version: 0.1.0
-- name: user_access_keys
+- name: user-access-keys
   repository: https://keshavprasadms.github.io/sunbird-helmchart-templates
   version: 0.1.0
-description: A helm chart for common opa policies
-name: common_opa_policies
-type: application
-version: 0.1.0
+digest: sha256:8f047badb1bfaabac003a479f0233f778bc8c324af112b15ab21fab7d760d1de
+generated: "2023-02-17T00:47:40.409014+05:30"

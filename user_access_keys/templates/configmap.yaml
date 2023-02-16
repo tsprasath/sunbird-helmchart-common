@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ .Chart.Name }}-public
+  name: {{ .Chart.Name | replace "_" "-" }}-public
   namespace: {{ .Release.Namespace }}
 type: Opaque
 data:
@@ -18,7 +18,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ .Chart.Name }}-private
+  name: {{ .Chart.Name | replace "_" "-" }}-private
   namespace: {{ .Release.Namespace }}
 type: Opaque
 data:

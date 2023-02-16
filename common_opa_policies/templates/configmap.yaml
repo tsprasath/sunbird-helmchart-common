@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Chart.Name | replace "_" "-" }}
   namespace: {{ .Release.Namespace }}
 data:
 {{ (.Files.Glob "common-policies/*").AsConfig | indent 2 }}
@@ -11,7 +11,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Chart.Name }}-public-keys
+  name: {{ .Chart.Name | replace "_" "-" }}-public-keys
   namespace: {{ .Release.Namespace }}
 data:
   public_keys.rego: |
