@@ -3,23 +3,23 @@ entries:
   common:
   - apiVersion: v2
     appVersion: 5.0.0
-    created: "2023-02-17T00:45:06.252672+05:30"
+    created: "2023-02-17T00:58:06.987652+05:30"
     description: A helm chart for common templates
-    digest: 8f6a0e97a1ee6790cbbd49f157053393f3aa61afe876003f41d9940f8e818b65
+    digest: c256a5358eb9969b6f74769d66c045f6eba070c2362e31f014e432db331398e3
     name: common
     type: library
     urls:
     - https://keshavprasadms.github.io/sunbird-helmchart-templates/common-0.1.0.tgz
     version: 0.1.0
-  user-access-keys:
+  user_access_keys:
   - apiVersion: v2
     appVersion: 5.0.0
-    created: "2023-02-17T00:45:06.253387+05:30"
+    created: "2023-02-17T00:58:06.988288+05:30"
     description: A helm chart for creating th user access public and private keys
-    digest: 0f745e56c9989733aa0eb851f62eddf6a6f11441b8c8b848f4fb63c1218552b5
-    name: user-access-keys
+    digest: 150d81cadab3b121b60d83a470035e4c94454a0e3c9ee6de7de57725ca22549e
+    name: user_access_keys
     type: application
     urls:
-    - https://keshavprasadms.github.io/sunbird-helmchart-templates/user-access-keys-0.1.0.tgz
+    - https://keshavprasadms.github.io/sunbird-helmchart-templates/user_access_keys-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-17T00:45:06.250431+05:30"
+generated: "2023-02-17T00:58:06.987006+05:30"
