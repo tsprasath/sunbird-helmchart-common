@@ -27,15 +27,15 @@ data:
         {{ $realm_kid | quote }}: {{ $realm_name | quote }}
     }
   {{ else }}
-    {{ $subchart1Configmap := fromYaml (include (
+    {{ $user_access_keys_subchart := fromYaml (include (
     print 
-       .Subcharts.useraccesskeys.Template.BasePath
+       .Subcharts.user_access_keys.Template.BasePath
         "/configmap.yaml"
     )
-    .Subcharts.useraccesskeys
+    .Subcharts.user_access_keys
     )}}
     jwt_public_keys_subchart := {
-        {{ range $key, $val := $subchart1Configmap.data }}
+        {{ range $key, $val := $user_access_keys_subchart.data }}
         {{- $key | quote }}: {{ $val | b64dec | trimSuffix "\n" | quote }},
         {{ end -}}
     }
