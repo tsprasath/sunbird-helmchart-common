@@ -17,49 +17,61 @@ data:
   public_keys.rego: |
     package public_keys
   {{- $user_access_public_keys := .Values.global.user_access_public_keys }}
+
   {{- if $user_access_public_keys }}
     {{- range $key, $val := $user_access_public_keys }}
     {{- $_ := set $user_access_public_keys $key ($val | b64enc) -}}
     {{ end -}}
   {{- end }}
+
   {{- if empty $user_access_public_keys }}
-  {{- $user_access_public_keys = (lookup "v1" "Secret" .Release.Namespace .Values.external_secrets.user_access_public_keys.name).data }}
+    {{- $user_access_public_keys = (lookup "v1" "Secret" .Release.Namespace .Values.external_secrets.user_access_public_keys.name).data }}
   {{- end }}
+
   {{- if empty $user_access_public_keys }}
     {{- $user_access_public_keys = fromYaml (include (print .Subcharts.user_access_keys.Template.BasePath "/configmap.yaml") .Subcharts.user_access_keys) }}
     {{- $user_access_public_keys = $user_access_public_keys.data }}
   {{- end }}
+
   {{- if empty $user_access_public_keys }}
     {{- printf  "ERROR | %s | The user_access_public_keys dictionary could not be found in values.yaml or in secrets or in subcharts" .Chart.Name }}
   {{- end }}
-  {{- $keycloak_sunbird_realm_kid := include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_kid.name "Key" .Values.external_secrets.keycloak_sunbird_realm_kid.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+
+  {{- $keycloak_sunbird_realm_kid := .Values.keycloak_sunbird_realm_kid }}
+  {{- if empty $keycloak_sunbird_realm_kid }}
+    {{- $keycloak_sunbird_realm_kid = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_kid.name "Key" .Values.external_secrets.keycloak_sunbird_realm_kid.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+  {{- end }}
+
+  {{- if empty $keycloak_sunbird_realm_kid }}
+    {{- $keycloak_sunbird_realm_kid = fromYaml (include (print .Subcharts.keycloak.Template.BasePath "/configmap.yaml") .Subcharts.keycloak) }}
+    {{- $keycloak_sunbird_realm_kid = get $keycloak_sunbird_realm_kid.data .Values.external_secrets.keycloak_sunbird_realm_kid.key }}
+  {{- end }}
+
+  {{- if empty $keycloak_sunbird_realm_kid }}
+    {{- printf  "ERROR | %s | The keycloak_sunbird_realm_kid value could not be found in values.yaml or in secrets or in subcharts" .Chart.Name }}
+  {{- end }}
+
   {{- $keycloak_sunbird_realm_public_key := include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+
+  {{- $keycloak_sunbird_realm_public_key := .Values.keycloak_sunbird_realm_public_key }}
+  {{- if empty $keycloak_sunbird_realm_public_key }}
+    {{- $keycloak_sunbird_realm_public_key = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+  {{- end }}
+
+  {{- if empty $keycloak_sunbird_realm_public_key }}
+    {{- $keycloak_sunbird_realm_public_key = fromYaml (include (print .Subcharts.keycloak.Template.BasePath "/configmap.yaml") .Subcharts.keycloak) }}
+    {{- $keycloak_sunbird_realm_public_key = get $keycloak_sunbird_realm_public_key.data .Values.external_secrets.keycloak_sunbird_realm_public_key.key }}
+  {{- end }}
+
+  {{- if empty $keycloak_sunbird_realm_public_key }}
+    {{- printf  "ERROR | %s | The keycloak_sunbird_realm_public_key value could not be found in values.yaml or in secrets or in subcharts" .Chart.Name }}
+  {{- end }}
+
   {{- if $user_access_public_keys }}
     jwt_public_keys := { 
         {{ range $key, $val := $user_access_public_keys }}
         {{- $key | quote }}: {{ $val | b64dec | trimSuffix "\n" | quote }},
         {{ end -}}
-        {{- if and $keycloak_sunbird_realm_kid $keycloak_sunbird_realm_public_key }}
-        {{- $keycloak_sunbird_realm_kid | quote }}: "-----BEGIN PUBLIC KEY-----\n{{ $keycloak_sunbird_realm_public_key }}\n-----END PUBLIC KEY-----"
-        {{ end -}}
+        {{- $keycloak_sunbird_realm_kid | quote }}: "-----BEGIN PUBLIC KEY-----\n{{ wrapWith 64 "\\n" $keycloak_sunbird_realm_public_key }}\n-----END PUBLIC KEY-----"
     }
-  {{ else }}
-    {{ $user_access_keys_subchart := fromYaml (include (
-    print 
-       .Subcharts.user_access_keys.Template.BasePath
-        "/configmap.yaml"
-    )
-    .Subcharts.user_access_keys
-    )}}
-    jwt_public_keys_subchart := {
-        {{ range $key, $val := $user_access_keys_subchart.data }}
-        {{- $key | quote }}: {{ $val | b64dec | trimSuffix "\n" | quote }},
-        {{ end -}}
-        {{ .Values.keycloak_sunbird_realm_kid | quote }}: "-----BEGIN PUBLIC KEY-----\n{{ wrapWith 64 "\\n" .Values.keycloak_sunbird_realm_public_key }}\n-----END PUBLIC KEY-----"
-    }
-    {{ if .Values.global.local_chart_development }}
-      {{ printf "Ignoring API server errors to allow templating" }}
-    {{ else }}
-      {{ printf "ERROR | %s | The configmap \"%s\" does not exist in the namespace \"%s\"" .Chart.Name .Values.external_configmaps.user_access_public_keys.name .Release.Namespace | fail }}
-    {{ end }}
   {{ end }}
