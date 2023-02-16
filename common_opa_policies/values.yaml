@@ -1,0 +1,16 @@
+## Common policies chart
+external_configmaps:
+  user_access_public_keys:
+    name: user-access-keys-public
+
+external_secrets:
+  keycloak_realm_public_key:
+    name: keycloak-realms
+    key: sunbird
+  keycloak_kids:
+    name: keycloak-kids
+    key: subird
+
+## Set this value to true when developing the chart
+global:
+  local_chart_development: false
