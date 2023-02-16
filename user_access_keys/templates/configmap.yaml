@@ -6,12 +6,12 @@ metadata:
   namespace: {{ .Release.Namespace }}
 type: Opaque
 data:
-{{ if .Values.user_access_public_keys }}
-{{- range $key, $value := .Values.user_access_public_keys }}
+{{ if .Values.global.user_access_public_keys }}
+{{- range $key, $value := .Values.global.user_access_public_keys }}
 {{ $key | indent 2 }}: {{ $value | b64enc }}
 {{- end }}
 {{- else -}}
-{{- printf "ERROR | %s | Please provide a dictionary of values for \"user_access_public_keys\"" .Chart.Name | fail }}
+{{- printf "ERROR | %s | Please provide a dictionary of values for \"global.user_access_public_keys\"" .Chart.Name | fail }}
 {{- end }}
 
 ---
@@ -22,10 +22,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
 type: Opaque
 data:
-{{- if .Values.user_access_private_keys }}
-{{- range $key, $value := .Values.user_access_private_keys }}
+{{- if .Values.global.user_access_private_keys }}
+{{- range $key, $value := .Values.global.user_access_private_keys }}
 {{ $key | indent 2 }}: {{ $value | b64enc }}
 {{- end }}
 {{- else -}}
-{{- printf "ERROR | %s | Please provide a dictionary of values for \"user_access_private_keys\"" .Chart.Name | fail }}
+{{- printf "ERROR | %s | Please provide a dictionary of values for \"global.user_access_private_keys\"" .Chart.Name | fail }}
 {{- end }}
