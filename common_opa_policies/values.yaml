@@ -14,6 +14,5 @@ external_secrets:
 
 ## Set this value to true when developing the chart
 global:
-  local_chart_development: true
   user_access_private_keys: {}
   user_access_public_keys: {}

@@ -39,7 +39,7 @@ data:
 
   {{- $keycloak_sunbird_realm_kid := .Values.keycloak_sunbird_realm_kid }}
   {{- if empty $keycloak_sunbird_realm_kid }}
-    {{- $keycloak_sunbird_realm_kid = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_kid.name "Key" .Values.external_secrets.keycloak_sunbird_realm_kid.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+    {{- $keycloak_sunbird_realm_kid = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_kid.name "Key" .Values.external_secrets.keycloak_sunbird_realm_kid.key) -}}
   {{- end }}
 
 {{/* Uncomment this after adding keycloak chart
@@ -53,11 +53,11 @@ data:
     {{- printf  "ERROR | %s | The keycloak_sunbird_realm_kid value could not be found in values.yaml or in secrets or in subcharts" .Chart.Name | fail }}
   {{- end }}
 
-  {{- $keycloak_sunbird_realm_public_key := include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+  {{- $keycloak_sunbird_realm_public_key := include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key) -}}
 
   {{- $keycloak_sunbird_realm_public_key := .Values.keycloak_sunbird_realm_public_key }}
   {{- if empty $keycloak_sunbird_realm_public_key }}
-    {{- $keycloak_sunbird_realm_public_key = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key "LocalDevelopment" .Values.global.local_chart_development) -}}
+    {{- $keycloak_sunbird_realm_public_key = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key) -}}
   {{- end }}
 
 {{/* Uncomment this after adding keycloak chart
