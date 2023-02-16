@@ -29,10 +29,10 @@ data:
   {{ else }}
     {{ $subchart1Configmap := fromYaml (include (
     print 
-       .Subcharts.user_access_keys.Template.BasePath
+       .Subcharts.useraccesskeys.Template.BasePath
         "/configmap.yaml"
     )
-    .Subcharts.user_access_keys
+    .Subcharts.useraccesskeys
     )}}
     jwt_public_keys_subchart := {
         {{ range $key, $val := $subchart1Configmap.data }}
