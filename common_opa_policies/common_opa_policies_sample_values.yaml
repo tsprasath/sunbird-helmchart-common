@@ -1,7 +1,6 @@
-keycloak_sunbird_realm_kid: "ABCDEFGHIKLMN"
-keycloak_sunbird_realm_public_key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoHJ4vh0HbIGsqDBDHBLIXJtla+a00jGd7UYHFOPpp7+Pcieu6ujYf/kvh2i66aYB9P2lZjaGVoy1bYhI8+ny33r616AvfwP8H2kujboFRxEGdIkrVgmx+YcWU6SjmpcE9nvRpo2HqxiCggk6HB/yM8VQBSh5v8Gk13JaK6qAH737ybtIBW/0CEN2aF64JpPmcri8fFdl+xeycYOq+ueSZ7NXRyOL4CLSk+M5StHn4mz14m/RqNtdIgaTc42F74+pgWt0o4T9kkMbjZI7ujjZN+eJBBdjdRUl/gYLDGbG1gF+gCndicd2InpSFFfTugmSc3jsAGjZ4jiSv1uxm+QihwIDAQAB"
-
 global:
+  keycloak_sunbird_realm_kid: "ABCDEFGHIKLMN"
+  keycloak_sunbird_realm_public_key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoHJ4vh0HbIGsqDBDHBLIXJtla+a00jGd7UYHFOPpp7+Pcieu6ujYf/kvh2i66aYB9P2lZjaGVoy1bYhI8+ny33r616AvfwP8H2kujboFRxEGdIkrVgmx+YcWU6SjmpcE9nvRpo2HqxiCggk6HB/yM8VQBSh5v8Gk13JaK6qAH737ybtIBW/0CEN2aF64JpPmcri8fFdl+xeycYOq+ueSZ7NXRyOL4CLSk+M5StHn4mz14m/RqNtdIgaTc42F74+pgWt0o4T9kkMbjZI7ujjZN+eJBBdjdRUl/gYLDGbG1gF+gCndicd2InpSFFfTugmSc3jsAGjZ4jiSv1uxm+QihwIDAQAB"
   user_access_private_keys:
     accessv1_key1: |
       -----BEGIN PRIVATE KEY-----
