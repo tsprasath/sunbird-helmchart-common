@@ -1,0 +1,81 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name | replace "_" "-" }}
+  namespace: {{ .Release.Namespace }}
+data:
+{{ (.Files.Glob "common_policies/*").AsConfig | indent 2 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name | replace "_" "-" }}-public-keys
+  namespace: {{ .Release.Namespace }}
+data:
+  public_keys.rego: |
+    package public_keys
+  {{- $user_access_public_keys := .Values.global.user_access_public_keys }}
+
+  {{- if $user_access_public_keys }}
+    {{- range $key, $val := $user_access_public_keys }}
+    {{- $_ := set $user_access_public_keys $key ($val | b64enc) -}}
+    {{ end -}}
+  {{- end }}
+
+  {{- if empty $user_access_public_keys }}
+    {{- $user_access_public_keys = (lookup "v1" "Secret" .Release.Namespace .Values.external_secrets.user_access_public_keys.name).data }}
+  {{- end }}
+
+  {{- if empty $user_access_public_keys }}
+    {{- $user_access_public_keys = fromYaml (include (print .Subcharts.user_access_keys.Template.BasePath "/configmap.yaml") .Subcharts.user_access_keys) }}
+    {{- $user_access_public_keys = $user_access_public_keys.data }}
+  {{- end }}
+
+  {{- if empty $user_access_public_keys }}
+    {{- printf  "ERROR | %s | The user_access_public_keys dictionary could not be found in values.yaml or in secrets or in subcharts" .Chart.Name | fail }}
+  {{- end }}
+
+  {{- $keycloak_sunbird_realm_kid := .Values.global.keycloak_sunbird_realm_kid }}
+
+  {{- if empty $keycloak_sunbird_realm_kid }}
+    {{- $keycloak_sunbird_realm_kid = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_kid.name "Key" .Values.external_secrets.keycloak_sunbird_realm_kid.key) -}}
+  {{- end -}}
+
+{{/* Uncomment this after adding keycloak chart
+  {{- if empty $keycloak_sunbird_realm_kid }}
+    {{- $keycloak_sunbird_realm_kid = fromYaml (include (print .Subcharts.keycloak.Template.BasePath "/configmap.yaml") .Subcharts.keycloak) }}
+    {{- $keycloak_sunbird_realm_kid = get $keycloak_sunbird_realm_kid.data .Values.external_secrets.keycloak_sunbird_realm_kid.key }}
+  {{- end }}
+*/}}
+
+  {{- if empty $keycloak_sunbird_realm_kid }}
+    {{- printf  "ERROR | %s | The keycloak_sunbird_realm_kid value could not be found in values.yaml or in secrets or in subcharts" .Chart.Name | fail }}
+  {{- end }}
+
+  {{- $keycloak_sunbird_realm_public_key := .Values.global.keycloak_sunbird_realm_public_key }}
+
+  {{- if empty $keycloak_sunbird_realm_public_key }}
+    {{- $keycloak_sunbird_realm_public_key = include "common.read.secret" (dict "ChartName" .Chart.Name "Namespace" .Release.Namespace "Name" .Values.external_secrets.keycloak_sunbird_realm_public_key.name "Key" .Values.external_secrets.keycloak_sunbird_realm_public_key.key) -}}
+  {{- end -}}
+
+{{/* Uncomment this after adding keycloak chart
+  {{- if empty $keycloak_sunbird_realm_public_key }}
+    {{- $keycloak_sunbird_realm_public_key = fromYaml (include (print .Subcharts.keycloak.Template.BasePath "/configmap.yaml") .Subcharts.keycloak) }}
+    {{- $keycloak_sunbird_realm_public_key = get $keycloak_sunbird_realm_public_key.data .Values.external_secrets.keycloak_sunbird_realm_public_key.key }}
+  {{- end }}
+*/}}
+
+  {{- if empty $keycloak_sunbird_realm_public_key }}
+    {{- printf  "ERROR | %s | The keycloak_sunbird_realm_public_key value could not be found in values.yaml or in secrets or in subcharts" .Chart.Name | fail }}
+  {{- end }}
+
+  {{- if $user_access_public_keys }}
+    jwt_public_keys := { 
+        {{ range $key, $val := $user_access_public_keys }}
+        {{- $key | quote }}: {{ $val | b64dec | trimSuffix "\n" | quote }},
+        {{ end -}}
+        {{- $keycloak_sunbird_realm_kid | quote }}: "-----BEGIN PUBLIC KEY-----\n{{ wrapWith 64 "\\n" $keycloak_sunbird_realm_public_key }}\n-----END PUBLIC KEY-----"
+    }
+  {{ end }}

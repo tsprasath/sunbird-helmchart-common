@@ -1,0 +1,17 @@
+## Common policies chart
+external_secrets:
+  keycloak_sunbird_realm_public_key:
+    name: keycloak-realms
+    key: sunbird
+  keycloak_sunbird_realm_kid:
+    name: keycloak-kids
+    key: sunbird
+  user_access_public_keys:
+    name: user-access-keys-public
+
+## Set this value to true when developing the chart
+global:
+  keycloak_sunbird_realm_public_key: ""
+  keycloak_sunbird_realm_kid: ""
+  user_access_private_keys: {}
+  user_access_public_keys: {}

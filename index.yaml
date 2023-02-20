@@ -1,0 +1,43 @@
+apiVersion: v1
+entries:
+  common:
+  - apiVersion: v2
+    appVersion: 5.0.0
+    created: "2023-02-17T16:34:11.842814+05:30"
+    description: A helm chart for common templates
+    digest: d69d2f1075a1a65aad80154498dd956f3b2d9a5e82f220d169628ed5383fa137
+    name: common
+    type: library
+    urls:
+    - https://keshavprasadms.github.io/sunbird-helmchart-templates/common-0.1.0.tgz
+    version: 0.1.0
+  common_opa_policies:
+  - apiVersion: v2
+    appVersion: 5.0.0
+    created: "2023-02-17T16:34:11.844596+05:30"
+    dependencies:
+    - name: common
+      repository: https://keshavprasadms.github.io/sunbird-helmchart-templates
+      version: 0.1.0
+    - name: user_access_keys
+      repository: https://keshavprasadms.github.io/sunbird-helmchart-templates
+      version: 0.1.0
+    description: A helm chart for common opa policies
+    digest: ec5d44491cc54120a8720cfec3915575965de0e3362213635d5129c1f1d6d90d
+    name: common_opa_policies
+    type: application
+    urls:
+    - https://keshavprasadms.github.io/sunbird-helmchart-templates/common_opa_policies-0.1.0.tgz
+    version: 0.1.0
+  user_access_keys:
+  - apiVersion: v2
+    appVersion: 5.0.0
+    created: "2023-02-17T16:34:11.846253+05:30"
+    description: A helm chart for creating th user access public and private keys
+    digest: 494fa1d4bc54a5b0879049253da5621e5c19466f6accd50ee397862f5fa60168
+    name: user_access_keys
+    type: application
+    urls:
+    - https://keshavprasadms.github.io/sunbird-helmchart-templates/user_access_keys-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-02-17T16:34:11.842375+05:30"
