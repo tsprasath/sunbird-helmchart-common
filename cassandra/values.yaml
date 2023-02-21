@@ -1,0 +1,22 @@
+replicas: 3
+image:
+  repository: cassandra
+  tag: 3.11.10
+  pullPolicy: IfNotPresent
+resources:
+  limits:
+    cpu: 500m
+    memory: 2Gi
+  requests:
+    cpu: 250m
+    memory: 1Gi
+storageSize: 10Gi
+
+service:
+  type: ClusterIP
+  name: cassandra
+  port: 9042
+  targetPort: 9042
+  headless:
+    name: cassandra-headless
+    port: 9042

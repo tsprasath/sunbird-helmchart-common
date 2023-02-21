@@ -1,0 +1,17 @@
+postgresql:
+  image: docker.io/bitnami/postgresql:11.7.0-debian-10-r9
+  imagePullPolicy: IfNotPresent
+  database: postgres
+  username: postgres
+  password: mypassword
+  port: 5432
+  replicas: 1
+  storage:
+    size: 10Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi

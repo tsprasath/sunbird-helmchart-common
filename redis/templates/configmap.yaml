@@ -1,0 +1,13 @@
+{{- if .Values.configmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "redis.fullname" . }}-configmap
+  labels:
+    app: {{ template "redis.fullname" . }}
+    release: "{{ .Release.Name }}"
+data:
+  redis.conf: |-
+{{ .Values.configmap | indent 4 }}
+{{- end }}
+
