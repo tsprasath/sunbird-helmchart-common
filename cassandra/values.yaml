@@ -18,5 +18,5 @@ service:
   port: 9042
   targetPort: 9042
   headless:
-    name: cassandra-headless
+    name: cassandra
     port: 9042

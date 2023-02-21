@@ -5,11 +5,8 @@ metadata:
   labels:
     app: cassandra
 spec:
-  selector:
-    app: cassandra
+  type: ClusterIP
   ports:
-    - name: cql
-      port: {{ .Values.service.headless.port }}
-      targetPort: {{ .Values.service.targetPort }}
-      protocol: TCP
-  clusterIP: None
+  - name: {{ .Values.service.headless.name }}
+    port: {{ .Values.service.headless.port }}
+    targetPort: {{ .Values.service.headless.port }}
