@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: {{ include "postgresql.fullname" . }}
 spec:
-  serviceName: {{ include "postgresql.fullname" . }}-headless
+  serviceName: {{ include "postgresql.fullname" . }}
   replicas: {{ .Values.postgresql.replicas }}
   selector:
     matchLabels:
