@@ -1,4 +1,4 @@
-replicas: 3
+replicas: 1
 image:
   repository: cassandra
   tag: 3.11.10

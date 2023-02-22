@@ -40,7 +40,7 @@ chart_dir=$PWD
 # Deploy the Helm charts from the current directory
 for chart in */ ; do
   chart_name=$(basename $chart)
-  if helm install $chart_name $chart --namespace $NAMESPACE >/dev/null; then
+  if helm upgrade --install $chart_name $chart --namespace $NAMESPACE >/dev/null; then
     echo -e "\e[92mSuccessfully deployed ${chart_name}\e[0m"
   else
     echo -e "\e[91mFailed to deploy ${chart_name}\e[0m"
