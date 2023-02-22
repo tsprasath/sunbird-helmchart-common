@@ -26,9 +26,15 @@ spec:
               memory: "{{ .Values.resources.requests.memory }}"
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.username }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "postgresql.fullname" . }}
+                  key: username
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgresql.password }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "postgresql.fullname" . }}
+                  key: password
             - name: POSTGRES_DB
               value: {{ .Values.postgresql.database }}
           ports:
