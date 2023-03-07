@@ -1,5 +1,5 @@
 #!/bin/bash
-NAMESPACE="learn"
+NAMESPACE="lern"
 
 # Check if kubectl is installed
 if ! command -v kubectl &> /dev/null; then

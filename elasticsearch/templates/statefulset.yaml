@@ -22,9 +22,9 @@ spec:
         - name: cluster.name
           value: {{ .Values.elasticsearch.clusterName }}
         - name: discovery.seed_hosts
-          value: "{{ .Release.Name }}-0.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Release.Name }}-1.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Release.Name }}-2.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300"
+          value: "{{ .Values.elasticsearch.clusterName }}-0.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Values.elasticsearch.clusterName }}-1.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Values.elasticsearch.clusterName }}-2.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300"
         - name: cluster.initial_master_nodes
-          value: "{{ .Release.Name }}-0,{{ .Release.Name }}-1,{{ .Release.Name }}-2"
+          value: "{{ .Values.elasticsearch.clusterName }}-0,{{ .Values.elasticsearch.clusterName }}-1,{{ .Values.elasticsearch.clusterName }}-2"
         - name: ES_JAVA_OPTS
           value: "-Xms{{ .Values.elasticsearch.heapSize }} -Xmx{{ .Values.elasticsearch.heapSize }}"
         ports:
@@ -37,7 +37,8 @@ spec:
           mountPath: /usr/share/elasticsearch/data
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: {{ template "elasticsearch.fullname" . }}
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -45,7 +46,6 @@ spec:
         app: {{ template "elasticsearch.name" . }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "standard"
       resources:
         requests:
-          storage: 1Gi
+          storage: 10Gi

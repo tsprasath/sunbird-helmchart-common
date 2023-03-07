@@ -1,38 +1,11 @@
-# Elasticsearch specific configurations
 elasticsearch:
-  # Number of Elasticsearch replicas
   replicas: 1
-
-  # Elasticsearch image and tag
+  clusterName: elasticsearch
+  heapSize: 512m
   image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 7.12.1
-
-  # Elasticsearch cluster name
-  clusterName: my-elasticsearch-cluster
-
-  # Elasticsearch indices to create
+    repository: "docker.elastic.co/elasticsearch/elasticsearch"
+    tag: "8.1.0"
   indices:
-    - name: index1
-      config: |
-        {
-          "settings": {
-            "index": {
-              "number_of_shards": 2,
-              "number_of_replicas": 1
-            }
-          }
-        }
-    - name: index2
-      config: |
-        {
-          "settings": {
-            "index": {
-              "number_of_shards": 3,
-              "number_of_replicas": 2
-            }
-          }
-        }
-
-  # Elasticsearch heap size
-  heapSize: 1g
+    - index1
+    - index2
+    - index3
