@@ -1,5 +1,5 @@
 postgresql:
-  image: docker.io/bitnami/postgresql:11.7.0-debian-10-r9
+  image: postgres:13-alpine
   imagePullPolicy: IfNotPresent
   database: postgres
   username: postgres
@@ -16,3 +16,29 @@ resources:
   requests:
     cpu: 250m
     memory: 1Gi
+
+# databaseNames:
+#   - db1
+#   - db2
+#   - db3
+
+# userNames:
+#   - user1
+#   - user2
+#   - user3
+
+# hooks:
+#   preStart:
+#     - name: create-databases
+#       manifest: |
+#         #!/bin/bash
+#         set -euo pipefail
+
+#         for db_name in "${databaseNames[@]}"; do
+#           psql -U postgres -c "CREATE DATABASE $db_name;"
+#         done
+
+#         for user_name in "${userNames[@]}"; do
+#           psql -U postgres -c "CREATE USER $user_name WITH PASSWORD '${user_name}password';"
+#           psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${postgresqlDatabase} TO $user_name;"
+#         done
