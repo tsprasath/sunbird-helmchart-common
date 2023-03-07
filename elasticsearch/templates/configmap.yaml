@@ -1,0 +1,13 @@
+{{- range $index := .Values.elasticsearch.indices }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "elasticsearch.fullname" . }}-{{ $index.name }}
+data:
+  index.json: |-
+{{ $index.config }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
