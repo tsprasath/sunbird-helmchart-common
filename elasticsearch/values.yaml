@@ -1,5 +1,5 @@
 elasticsearch:
-  replicas: 1
+  replicas: 3
   clusterName: elasticsearch
   heapSize: 512m
   image:

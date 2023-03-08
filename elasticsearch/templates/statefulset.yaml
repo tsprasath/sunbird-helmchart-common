@@ -15,18 +15,48 @@ spec:
       labels:
         app: {{ template "elasticsearch.name" . }}
     spec:
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+      - name: increase-vm-max-map
+        image: busybox
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      - name: increase-fd-ulimit
+        image: busybox
+        command: ["sh", "-c", "ulimit -n 65536"]
+        securityContext:
+          privileged: true
+        securityContext:
+          privileged: true      
       containers:
       - name: elasticsearch
         image: {{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag }}
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m
         env:
         - name: cluster.name
           value: {{ .Values.elasticsearch.clusterName }}
         - name: discovery.seed_hosts
-          value: "{{ .Values.elasticsearch.clusterName }}-0.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Values.elasticsearch.clusterName }}-1.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Values.elasticsearch.clusterName }}-2.{{ template "elasticsearch.fullname" . }}.headless.{{ .Release.Namespace }}.svc.cluster.local:9300"
+          value: "{{ .Values.elasticsearch.clusterName }}-0.{{ template "elasticsearch.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Values.elasticsearch.clusterName }}-1.{{ template "elasticsearch.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:9300,{{ .Values.elasticsearch.clusterName }}-2.{{ template "elasticsearch.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:9300"
         - name: cluster.initial_master_nodes
           value: "{{ .Values.elasticsearch.clusterName }}-0,{{ .Values.elasticsearch.clusterName }}-1,{{ .Values.elasticsearch.clusterName }}-2"
         - name: ES_JAVA_OPTS
           value: "-Xms{{ .Values.elasticsearch.heapSize }} -Xmx{{ .Values.elasticsearch.heapSize }}"
+        - name: network.host
+          value: "0.0.0.0"  
+        - name: xpack.security.enabled 
+          value: "false"               
         ports:
         - containerPort: 9200
           name: http
