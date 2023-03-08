@@ -1,0 +1,7 @@
+replicaCount: 1
+image:
+  repository: quay.io/keycloak/keycloak:21.0.1
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8080
