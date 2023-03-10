@@ -1,6 +1,17 @@
-apiVersion: v2
 name: keycloak
-description: A Helm chart for Kubernetes
-type: application
-version: 0.1.0
-appVersion: 1.16.0
+version: 4.10.1
+appVersion: 5.0.0
+description: DEPRECATED - Open Source Identity and Access Management For Modern Applications and Services
+keywords:
+  - sso
+  - idm
+  - openid connect
+  - saml
+  - kerberos
+  - ldap
+home: https://www.keycloak.org/
+icon: https://www.keycloak.org/resources/images/keycloak_logo_480x108.png
+sources:
+  - https://github.com/jboss-dockerfiles/keycloak
+# Chart moved to https://github.com/codecentric/helm-charts
+deprecated: true
