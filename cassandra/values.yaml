@@ -105,7 +105,7 @@ image:
 dbUser:
   user: cassandra
   forcePassword: false
-  password: ""
+  password: "password"
   ## Use an existing secrets which already stores your password data.
   ## for backwards compatibility, existingSecret can be a simple string,
   ## referencing the secret by name.
@@ -903,3 +903,12 @@ tls:
     ##    memory: 128Mi
     ##
     requests: {}
+
+cassandraConfig:
+  keyspaces:
+    - name: keyspace1
+      replicationFactor: 2
+      durableWrites: true
+    - name: keyspace2
+      replicationFactor: 3
+      durableWrites: false
