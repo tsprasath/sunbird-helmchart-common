@@ -4,7 +4,7 @@ metadata:
   name: init-db
 data:
   "01-init.cql": |
-    CREATE KEYSPACE IF NOT EXISTS sunbird
+    CREATE KEYSPACE IF NOT EXISTS myapp
       WITH REPLICATION = {
         'class': 'SimpleStrategy',
         'replication_factor' : 1
