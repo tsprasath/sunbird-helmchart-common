@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "keycloak.fullname" . }}
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "keycloak.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "keycloak.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["start-dev"]
+          env:
+            - name: DB_ADDR
+              value: "jdbc:postgresql://postgresql.lern.svc.local:5432"
+            - name: DB_DATABASE
+              value: keycloak
+            - name: DB_PASSWORD
+              value: mypassword
+            - name: DB_SCHEMA
+              value: public
+            - name: DB_USER
+              value: postgres
+            - name: DB_VENDOR
+              value: POSTGRES
+            - name: KEYCLOAK_PASSWORD
+              value: Pa55w0rd
+            - name: KEYCLOAK_USER
+              value: admin
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"           
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
