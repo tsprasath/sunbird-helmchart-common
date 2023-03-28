@@ -95,7 +95,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/postgresql
-  tag: 15.2.0-debian-11-r5
+  tag: 11.18.0-debian-11-r34
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -124,7 +124,7 @@ auth:
   enablePostgresUser: true
   ## @param auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
   ##
-  postgresPassword: ""
+  postgresPassword: "postgres"
   ## @param auth.username Name for a custom user to create
   ##
   username: ""
@@ -334,10 +334,11 @@ primary:
     ##      echo "Do something."
     ##
     scripts: {}
+
     ## @param primary.initdb.scriptsConfigMap ConfigMap with scripts to be run at first boot
     ## NOTE: This will override `primary.initdb.scripts`
     ##
-    scriptsConfigMap: ""
+    scriptsConfigMap: "dbsetup"
     ## @param primary.initdb.scriptsSecret Secret with scripts to be run at first boot (in case it contains sensitive information)
     ## NOTE: This can work along `primary.initdb.scripts` or `primary.initdb.scriptsConfigMap`
     ##
