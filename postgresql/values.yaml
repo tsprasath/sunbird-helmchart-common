@@ -334,7 +334,7 @@ primary:
     ##      echo "Do something."
     ##
     scripts: {}
-    
+
     ## @param primary.initdb.scriptsConfigMap ConfigMap with scripts to be run at first boot
     ## NOTE: This will override `primary.initdb.scripts`
     ##
