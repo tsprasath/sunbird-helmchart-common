@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: 4.4.1
+home: https://www.neo4j.com
+icon: http://info.neo4j.com/rs/773-GON-065/images/neo4j_logo.png
+keywords:
+- graph
+- database
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems
+name: neo4j
+sources:
+- https://github.com/neo4j/neo4j
+version: 4.4.1

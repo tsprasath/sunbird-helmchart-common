@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-job
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ .Release.Name }}
+spec:
+  template:
+    spec:
+      securityContext:
+        fsGroup: 0
+      containers:
+      - name: {{ .Release.Name }}-container
+        image: bitnami/bitnami-shell
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        command: ["sh", "-c", "cd /opt/scripts && ./indices.sh"]
+        volumeMounts:
+        - name: {{ .Release.Name }}-scripts-volume
+          mountPath: /opt/scripts
+        - name: {{ .Release.Name }}-indices-volume
+          mountPath: /opt/indices
+      restartPolicy: Never
+      volumes:
+      - name: {{ .Release.Name }}-scripts-volume
+        configMap:
+          name: {{ .Release.Name }}-scripts-configmap
+          defaultMode: 0777 
+      - name: {{ .Release.Name }}-indices-volume
+        configMap:
+          name: {{ .Release.Name }}-indices-configmap
+          defaultMode: 0777
