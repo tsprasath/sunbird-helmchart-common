@@ -77,7 +77,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/kafka
-  tag: 3.4.0-debian-11-r6
+  tag: 3.1.0-debian-10-r0
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -1500,7 +1500,7 @@ metrics:
 provisioning:
   ## @param provisioning.enabled Enable kafka provisioning Job
   ##
-  enabled: false
+  enabled: true
   ## @param provisioning.numPartitions Default number of partitions for topics when unspecified
   ##
   numPartitions: 1
@@ -1516,7 +1516,65 @@ provisioning:
   ##     max.message.bytes: 64000
   ##     flush.messages: 1
   ##
-  topics: []
+  topics:
+  
+  #processing_kafka_topics:
+  - name: lms.audit.events
+    retention_time: 172800000
+  - name: lms.sso.events
+    num_of_partitions: 4
+    retention_time: 172800000
+  - name: lms.user.account.merge
+    retention_time: 172800000
+  - name: lms.notification
+    retention_time: 172800000
+
+#ml_service_topics:
+  - name: ml.observation.raw
+    retention_time: 172800000
+  - name: ml.observation.druid
+    retention_time: 172800000  
+  - name: ml.observation.evidence.druid
+    retention_time: 172800000
+  - name: ml.survey.raw
+    retention_time: 172800000
+  - name: ml.survey.druid
+    retention_time: 172800000    
+  - name: ml.survey.evidence.druid
+    retention_time: 172800000
+  - name: ml.submission.rating.raw
+    retention_time: 172800000
+  - name: ml.incomplete.observation.raw
+    retention_time: 172800000
+  - name: ml.notification.raw
+    retention_time: 172800000
+  - name: ml.incomplete.survey.raw
+    retention_time: 172800000
+  - name: ml.improvement.project.submission
+    retention_time: 172800000
+  - name: ml.projects.submissions
+    retention_time: 172800000
+
+#uci_service_topics:
+  - name: inbound-error
+    retention_time: 86400000
+  - name: inbound-processed
+    retention_time: 86400000
+  - name: inbound-unprocessed
+    retention_time: 86400000
+  - name: outbound
+    retention_time: 86400000
+  - name: campaign
+    retention_time: 86400000
+  - name: odk.transformer
+    retention_time: 86400000
+  - name: uci.telemetry
+    retention_time: 86400000
+
+#av_service_topics:
+  - name: av.question.bulkupload
+    retention_time: 172800000
+
   ## @param provisioning.nodeSelector Node labels for pod assignment
   ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
   ##
